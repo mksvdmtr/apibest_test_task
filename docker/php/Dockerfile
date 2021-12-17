@@ -1,4 +1,8 @@
 FROM php:7.4-cli-alpine
+ARG UID
+ARG GID
+
+RUN adduser --disabled-password -u ${UID} -g ${GID} devel
 
 RUN apk update && \
     apk add libxml2-dev libzip-dev icu-dev oniguruma-dev netcat-openbsd
@@ -10,6 +14,7 @@ RUN curl https://getcomposer.org/composer-stable.phar -o /bin/composer && chmod 
 
 WORKDIR /app
 
-ENTRYPOINT [ "docker/php/entrypoint.sh" ]
+USER devel
 
+ENTRYPOINT [ "docker/php/entrypoint.sh" ]
 
